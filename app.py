@@ -15,12 +15,12 @@ st.set_page_config(
 @st.cache_data
 def load_data():
     try:
-        df_chlopcy = pd.read_csv("top15_imiona_chlopcy.csv", encoding='cp1250')
+        df_chlopcy = pd.read_csv("top15_imiona_meskie.csv", encoding='cp1250')
         df_chlopcy['plec'] = 'M'  # Upewniamy się, że płeć jest poprawnie oznaczona
         
         # Próba wczytania danych dla dziewczynek (jeśli istnieją)
         try:
-            df_dziewczyn = pd.read_csv("top15_imiona_dziewczyn.csv", encoding='cp1250')
+            df_dziewczyn = pd.read_csv("top15_imiona_zenskie.csv", encoding='cp1250')
             df_dziewczyn['plec'] = 'K'
             df = pd.concat([df_chlopcy, df_dziewczyn], ignore_index=True)
         except FileNotFoundError:
@@ -55,9 +55,7 @@ def main():
         st.title("🔎 Analiza popularności imion w Polsce")
         st.markdown("Wizualizacja zmian **pozycji w rankingu** oraz **liczby nadanych imion** na podstawie danych GUS.")
     
-    with col2:
-        st.image("https://www.gov.pl/photo/format/a7cd2cd5-5b40-4e98-9577-09caa8013462/resolution/1920x810", width=150)
-    
+
     st.markdown("---")
     
     # Wczytanie danych
@@ -265,51 +263,51 @@ def main():
         opis = komentarz(imie, ranking, df_poprzedni)
 
         st.markdown(f"**{pozycja}. {imie}** – {liczba} {opis}")
-
     
-    # Sekcja animacji
+    # Sekcja animacji - PRZENIESIONA DO WNĘTRZA FUNKCJI MAIN
     st.markdown("---")
-    st.subheader("📽️ Animacja rankingu (Bar Chart Race)")
-    
-    # Określamy plik animacji w zależności od wybranej płci
-    plik_animacji = "bar_race_imiona_chlopcy.gif" if plec_filter == 'M' else "bar_race_imiona_dziewczyn.gif"
-    
+    st.subheader("🎬 Animacja rankingu (Bar Chart Race)")
+
+    # Wybierz plik wideo w zależności od płci - teraz plec_filter jest dostępne
+    plik_video = "bar_race_imiona_meskie.mp4" if plec_filter == 'M' else "bar_race_imiona_zenskie.mp4"
+
     col1, col2 = st.columns([3, 1])
-    
+
     with col1:
         try:
-            st.image(plik_animacji, caption=f"Dynamiczna zmiana popularności imion {'chłopięcych' if plec_filter == 'M' else 'dziewczęcych'} w czasie")
+            st.video(plik_video)
         except:
-            st.warning(f"Nie znaleziono pliku animacji: {plik_animacji}")
-            st.info("Aby wyświetlić animację, umieść plik GIF w tym samym katalogu co aplikacja.")
-    
+            st.warning(f"Nie znaleziono pliku wideo: {plik_video}")
+            st.info("Upewnij się, że plik MP4 znajduje się w katalogu aplikacji.")
+
     with col2:
         st.markdown("""
-        **Co pokazuje animacja?**
+        **🎥 Co pokazuje animacja?**
         
-        Powyższa animacja przedstawia dynamiczną zmianę w rankingu najpopularniejszych imion w kolejnych latach. 
-        Pozwala na wizualne śledzenie trendów i momentów, gdy jedne imiona wyprzedzają inne w popularności.
+        Ta animacja przedstawia **dynamiczne zmiany pozycji imion w rankingu** na przestrzeni lat. 
+        Pokazuje momenty awansu, spadku i dominacji niektórych imion w danym okresie.
+        To efektowny sposób wizualizacji trendów społecznych.
         """)
-    
-    # Miejsce na komentarz
-    st.markdown("---")
-    st.subheader("💬 Interpretacja wyników")
-    
-    with st.container():
-        st.markdown("""
-        W tym miejscu możesz dodać własną interpretację wyników analizy. Na przykład:
+
+        # Miejsce na komentarz
+        st.markdown("---")
+        st.subheader("💬 Interpretacja wyników")
         
-        - Jakie trendy są widoczne w popularności imion?
-        - Które imiona zdobywają popularność, a które ją tracą?
-        - Czy widać wpływ wydarzeń kulturowych na wybór imion?
-        - Jak zmieniają się preferencje rodziców na przestrzeni lat?
+        with st.container():
+            st.markdown("""
+            W tym miejscu możesz dodać własną interpretację wyników analizy. Na przykład:
+            
+            - Jakie trendy są widoczne w popularności imion?
+            - Które imiona zdobywają popularność, a które ją tracą?
+            - Czy widać wpływ wydarzeń kulturowych na wybór imion?
+            - Jak zmieniają się preferencje rodziców na przestrzeni lat?
+            
+            Możesz edytować ten tekst w kodzie aplikacji, dodając własne obserwacje i wnioski.
+            """)
         
-        Możesz edytować ten tekst w kodzie aplikacji, dodając własne obserwacje i wnioski.
-        """)
-    
-    # Stopka
-    st.markdown("---")
-    st.caption("© 2025 | Aplikacja do analizy popularności imion na podstawie danych GUS")
+        # Stopka
+        st.markdown("---")
+        st.caption("© 2025 | Aplikacja do analizy popularności imion na podstawie danych GUS")
 
 if __name__ == "__main__":
     main()
