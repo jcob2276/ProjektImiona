@@ -232,38 +232,80 @@ def main():
             ).style.highlight_max(axis=1, color='lightgreen')
         )
 
+    # PRZENIESIONO DO WNĘTRZA FUNKCJI MAIN:
     # Statyczny ranking z komentarzem – TOP 10 imion w wybranym roku
-    st.markdown("### 🏅 Szczegółowy ranking imion z komentarzem")
+    with st.expander("🏅 Ranking imion i analiza zmian między latami"):
+        st.markdown("Zobacz szczegółowy ranking TOP 10 imion w wybranym roku oraz analizę awansów, spadków i zmian liczby nadanych imion między kolejnymi latami.")
 
-    rok_dla_rankingu = st.slider("📆 Wybierz rok do analizy rankingu:", min_value=rok_start, max_value=rok_koniec, value=max_rok)
+        rok_dla_rankingu = st.slider(
+            "📆 Wybierz rok do analizy:",
+            min_value=rok_start + 1,
+            max_value=rok_koniec,
+            value=max_rok
+        )
 
-    df_biezacy = df_plec[df_plec['Rok'] == rok_dla_rankingu].copy()
-    df_poprzedni = df_plec[df_plec['Rok'] == (rok_dla_rankingu - 1)].copy()
+        df_biezacy = df_plec[df_plec['Rok'] == rok_dla_rankingu].copy()
+        df_poprzedni = df_plec[df_plec['Rok'] == (rok_dla_rankingu - 1)].copy()
 
-    top10 = df_biezacy.nsmallest(10, 'Ranking').copy()
-    top10 = top10[['Imie', 'Liczba', 'Ranking']].reset_index(drop=True)
+        # 🎯 Top 10 klasyczne
+        top10 = df_biezacy.nsmallest(10, 'Ranking').copy()
+        top10 = top10[['Imie', 'Liczba', 'Ranking']].reset_index(drop=True)
 
-    def komentarz(imie, ranking_now, df_prev):
-        rekord_prev = df_prev[df_prev['Imie'] == imie]
-        if rekord_prev.empty:
-            return "(nowe w rankingu)"
-        ranking_prev = int(rekord_prev['Ranking'].values[0])
-        if ranking_prev == ranking_now:
-            return f"(utrzymuje miejsce {ranking_now}.)"
-        elif ranking_prev > ranking_now:
-            return f"(awans z {ranking_prev}. miejsca)"
-        else:
-            return f"(spadek z {ranking_prev}. miejsca)"
+        st.markdown("#### 📌 Ranking TOP 10 imion:")
+        for idx, row in top10.iterrows():
+            pozycja = idx + 1
+            imie = row['Imie']
+            liczba = int(row['Liczba'])
+            ranking = int(row['Ranking'])
 
-    for idx, row in top10.iterrows():
-        pozycja = idx + 1
-        imie = row['Imie']
-        liczba = int(row['Liczba'])
-        ranking = int(row['Ranking'])
-        opis = komentarz(imie, ranking, df_poprzedni)
+            # Komentarz na podstawie poprzedniego roku
+            rekord_prev = df_poprzedni[df_poprzedni['Imie'] == imie]
+            if rekord_prev.empty:
+                opis = "(nowe w rankingu)"
+            else:
+                ranking_prev = int(rekord_prev['Ranking'].values[0])
+                if ranking_prev == ranking:
+                    opis = f"(utrzymuje miejsce {ranking}.)"
+                elif ranking_prev > ranking:
+                    opis = f"(awans z {ranking_prev}. miejsca)"
+                else:
+                    opis = f"(spadek z {ranking_prev}. miejsca)"
 
-        st.markdown(f"**{pozycja}. {imie}** – {liczba} {opis}")
-    
+            st.markdown(f"**{pozycja}. {imie}** – {liczba} {opis}")
+
+        # 📊 Tabela analityczna: porównanie zmian
+        st.markdown("#### 🔄 Zmiany pozycji i liczby między rokiem {0} a {1}".format(rok_dla_rankingu - 1, rok_dla_rankingu))
+
+        df_join = pd.merge(
+            df_biezacy[['Imie', 'Ranking', 'Liczba']],
+            df_poprzedni[['Imie', 'Ranking', 'Liczba']],
+            on='Imie',
+            how='inner',
+            suffixes=('_now', '_prev')
+        )
+
+        df_join['ΔRanking'] = df_join['Ranking_prev'] - df_join['Ranking_now']
+        df_join['ΔLiczba'] = df_join['Liczba_now'] - df_join['Liczba_prev']
+
+        def gen_komentarz(row):
+            if row['ΔRanking'] > 0 and row['ΔLiczba'] > 0:
+                return "📈 Awans i wzrost liczby"
+            elif row['ΔRanking'] < 0 and row['ΔLiczba'] < 0:
+                return "📉 Spadek i spadek liczby"
+            elif row['ΔRanking'] > 0 and row['ΔLiczba'] < 0:
+                return "📊 Awans mimo spadku liczby"
+            elif row['ΔRanking'] < 0 and row['ΔLiczba'] > 0:
+                return "📉 Spadek mimo wzrostu liczby"
+            else:
+                return "➖ Brak zmian / niewielka różnica"
+
+        df_join['Komentarz'] = df_join.apply(gen_komentarz, axis=1)
+
+        df_join = df_join.sort_values(by='ΔRanking', ascending=False).reset_index(drop=True)
+
+        st.dataframe(df_join[['Imie', 'Ranking_prev', 'Ranking_now', 'ΔRanking', 'Liczba_prev', 'Liczba_now', 'ΔLiczba', 'Komentarz']])
+
+        
     # Sekcja animacji - PRZENIESIONA DO WNĘTRZA FUNKCJI MAIN
     st.markdown("---")
     st.subheader("🎬 Animacja rankingu (Bar Chart Race)")
