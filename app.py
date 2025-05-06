@@ -7,7 +7,7 @@ import numpy as np
 # Ustawienia strony
 st.set_page_config(
     page_title="Analiza popularności imion w Polsce",
-    page_icon="👶",
+    page_icon="🎉",
     layout="wide",
 )
 
@@ -18,7 +18,7 @@ def load_data():
         df_chlopcy = pd.read_csv("top15_imiona_meskie.csv", encoding='cp1250')
         df_chlopcy['plec'] = 'M'  # Upewniamy się, że płeć jest poprawnie oznaczona
         
-        # Próba wczytania danych dla dziewczynek (jeśli istnieją)
+        # Próba wczytania danych dla dziewczyn
         try:
             df_dziewczyn = pd.read_csv("top15_imiona_zenskie.csv", encoding='cp1250')
             df_dziewczyn['plec'] = 'K'
@@ -330,26 +330,6 @@ def main():
         Pokazuje momenty awansu, spadku i dominacji niektórych imion w danym okresie.
         To efektowny sposób wizualizacji trendów społecznych.
         """)
-
-        # Miejsce na komentarz
-        st.markdown("---")
-        st.subheader("💬 Interpretacja wyników")
-        
-        with st.container():
-            st.markdown("""
-            W tym miejscu możesz dodać własną interpretację wyników analizy. Na przykład:
-            
-            - Jakie trendy są widoczne w popularności imion?
-            - Które imiona zdobywają popularność, a które ją tracą?
-            - Czy widać wpływ wydarzeń kulturowych na wybór imion?
-            - Jak zmieniają się preferencje rodziców na przestrzeni lat?
-            
-            Możesz edytować ten tekst w kodzie aplikacji, dodając własne obserwacje i wnioski.
-            """)
-        
-        # Stopka
-        st.markdown("---")
-        st.caption("© 2025 | Aplikacja do analizy popularności imion na podstawie danych GUS")
 
 if __name__ == "__main__":
     main()
