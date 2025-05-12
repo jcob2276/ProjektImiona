@@ -328,8 +328,38 @@ def main():
         
         Ta animacja przedstawia **dynamiczne zmiany pozycji imion w rankingu** na przestrzeni lat. 
         Pokazuje momenty awansu, spadku i dominacji niektórych imion w danym okresie.
-        To efektowny sposób wizualizacji trendów społecznych.
+        
         """)
+
+    # Interpretacja wyników na podstawie wybranej płci
+    st.markdown("---")
+    st.subheader("💬 Interpretacja wyników")
+
+    if plec_filter == 'M':
+        st.markdown("""
+        ### 👦 Wnioski – imiona chłopięce
+        
+        1. **Stabilność czołówki:** Imię **JAKUB** dominowało przez wiele lat w czołówce rankingu. Później **ANTONI** zaczął przejmować prowadzenie — jest to przykład długoterminowego przesunięcia trendu.
+        
+        2. **Zmiana lidera:** Około 2015 roku **ANTONI** przejął miejsce JAKUBA, mimo że liczba nadanych imion w tym czasie nie była drastycznie wyższa — to pokazuje, że ranking zależy od relacji do pozostałych pozycji.
+        
+        3. **Awans mimo spadku liczby:** Zdarzały się sytuacje, gdzie imię awansowało w rankingu mimo mniejszej liczby nadań niż rok wcześniej — wskazuje to na ogólny spadek lub zmiany u konkurencji.
+        
+        4. **Zmienność dalszych miejsc:** Imiona z miejsc 6–15 rotują znacznie częściej niż TOP 3 — to pokazuje większą elastyczność i wpływ chwilowych trendów (np. moda, media, celebryci).
+        """)
+    else:
+        st.markdown("""
+        ### 👧 Wnioski – imiona dziewczęce
+        
+        1. **Większa zmienność:** W porównaniu do chłopców, **imiona dziewczęce wykazują większą rotację** w czołówce — TOP 3 zmieniało się częściej, a imiona wskakiwały i wypadały z rankingu dynamicznie.
+        
+        2. **Efekt mody:** Imię **OLIWIA** praktycznie nie występowało w 2000, ale po 2010 roku zaczęło gwałtownie zyskiwać popularność. Podobnie **LENA** — wejścia do rankingu były szybkie, co sugeruje wpływ medialny.
+        
+        3. **Spadki mimo większych liczb:** Zdarzało się, że imię jak np. **JULIA** miało większą liczbę nadań niż rok wcześniej, ale spadło w rankingu — pokazuje to, że **ranking jest względny**, a nie absolutny.
+        
+        4. **Szerszy repertuar:** Większa liczba imion u dziewcząt powoduje, że rodzice rzadziej trzymają się „zabetonowanej” czołówki, w porównaniu do chłopców.
+        """)
+
 
 if __name__ == "__main__":
     main()
