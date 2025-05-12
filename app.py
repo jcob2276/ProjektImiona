@@ -302,8 +302,10 @@ def main():
         df_join['Komentarz'] = df_join.apply(gen_komentarz, axis=1)
 
         df_join = df_join.sort_values(by='ΔRanking', ascending=False).reset_index(drop=True)
+        df_join.index += 1  # 🔥 numeracja od 1
 
-        st.dataframe(df_join[['Imie', 'Ranking_prev', 'Ranking_now', 'ΔRanking', 'Liczba_prev', 'Liczba_now', 'ΔLiczba', 'Komentarz']])
+    st.dataframe(df_join[['Imie', 'Ranking_prev', 'Ranking_now', 'ΔRanking', 'Liczba_prev', 'Liczba_now', 'ΔLiczba', 'Komentarz']])
+
 
         
     # Sekcja animacji - PRZENIESIONA DO WNĘTRZA FUNKCJI MAIN
