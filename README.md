@@ -1,25 +1,17 @@
 # 📊 Analiza popularności imion w Polsce (2000–2024)
 
-Aplikacja interaktywna zbudowana w Streamlit służąca do analizy zmian popularności imion dzieci w Polsce w latach 2000–2024 na podstawie danych z GUS. Projekt zrealizowany w ramach zajęć z analizy danych przestrzennych.
+Celem projektu była analiza zmian w rankingach imion męskich i żeńskich nadawanych dzieciom w Polsce w latach **2000–2024**. Dane pochodzą z Głównego Urzędu Statystycznego (GUS) i zostały przetworzone do formy pozwalającej na porównania rok do roku.
 
-## 🔧 Funkcje aplikacji
+Zbudowaliśmy interaktywną aplikację w Streamlit, która umożliwia:
 
-- 📅 Filtrowanie danych po płci i przedziale lat
-- 🎛️ Wybór imion do analizy:
-  - TOP N z rankingu (5, 10, 15)
-  - lub własna selekcja
-- 📈 Interaktywne wykresy:
-  - Liczba nadanych imion w czasie
-  - Pozycja w rankingu imion
-- 🏅 Szczegółowy ranking dla wybranego roku z opisem awansu/spadku
-- 📊 Tabela porównawcza między latami:
-  - ΔRanking (zmiana pozycji w rankingu)
-  - ΔLiczba (zmiana liczby nadanych imion)
-  - Opis zmiany (np. „awans mimo spadku liczby”)
-- 🎬 Animacja rankingu imion (Bar Chart Race `.mp4`) dla chłopców i dziewcząt
-- 📋 Tabela pivot z agregacją danych
-- 🧠 Sekcja interpretacyjna z pytaniami badawczymi
-- 🌐 Gotowe do uruchomienia lokalnie lub online (Streamlit Cloud)
+- analizę **pozycji w rankingu** oraz **liczby nadań imion** w czasie,
+- porównania między latami: awanse, spadki, stabilność imion,
+- dynamiczne przeglądanie imion TOP 5/10/15 lub własny wybór,
+- prezentację danych w postaci wykresów i tabel,
+- interpretację wyników z uwzględnieniem kontekstu kulturowego,
+- wizualizację trendów w formie **animacji Bar Chart Race** dla imion chłopięcych i dziewczęcych.
 
-## 📁 Struktura plików
+Dodatkowo dodaliśmy sekcję z automatycznie generowanymi wnioskami, które pokazują różnice między rankingiem a realną zmianą popularności (liczby).
+
+Projekt zawiera pełną obsługę filtrowania, analizę różnic (`ΔRanking`, `ΔLiczba`) oraz komentarze opisujące zmiany dla każdego imienia.
 
